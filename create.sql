@@ -4,7 +4,7 @@ CREATE TABLE Actor(id INT NOT NULL, last VARCHAR(20), first VARCHAR(20), sex VAR
 
 CREATE TABLE Sales(mid INT NOT NULL,ticketsSold INT,totalIncome INT,FOREIGN KEY (mid) REFERENCES Movie(id),CHECK(mid >= 0 AND mid <= MaxMovieID(id)),CHECK(ticketsSold >= 0),CHECK(totalIncome >= 0)) ENGINE = INNODB, CHARACTER SET utf8;
 
-CREATE TABLE Director(id INT NOT NULL,last VARCHAR(20),first VARCHAR(20),sex VARCHAR(6),dob DATE,dod DATE,PRIMARY KEY (id),CHECK(id >= 0 AND id <= MaxPersonID(id))) ENGINE = INNODB, CHARACTER SET utf8;
+CREATE TABLE Director(id INT NOT NULL,last VARCHAR(20),first VARCHAR(20),dob DATE,dod DATE,PRIMARY KEY (id),CHECK(id >= 0 AND id <= MaxPersonID(id))) ENGINE = INNODB, CHARACTER SET utf8;
 
 CREATE TABLE MovieGenre(mid INT NOT NULL,genre VARCHAR(20),FOREIGN KEY (mid) REFERENCES Movie(id),CHECK(mid >= 0 AND mid <= MaxMovieID(id))) ENGINE = INNODB;
 
