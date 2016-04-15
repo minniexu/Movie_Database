@@ -15,43 +15,45 @@ Example: <tt>SELECT * FROM Actor WHERE id=10;</tt><br />
 
 
 <?php
-	$db_connection = mysql_connect("localhost", "cs143", "");
-	if(!$db_connection){
-		die('Not connected : ' . mysql_error());
-	}
-	echo 'Connected successfully';
-	echo '<br/>';
-	
-	$db_selected = mysql_select_db("CS143", $db_connection);
-	if(!$db_selected){
-		die('Can\'t use CS143 : ' . mysql_error());
-	}
-	echo 'Connected to CS143!';
-	echo '<br/>';
-
 	if($_GET["query"]){
 		ini_set('display_errors', 0);
 		$query = $_GET["query"];
-
-		$query = str_replace(array("\r", "\n"), " ", $query);
-		//$query = mysql_escape_string($_GET["query"], $db_connection);
-		if($query){
-			$san_que = mysql_real_escape_string($query, $db_connection);
-			$rs = mysql_query($san_que, $db_connection);
-			while($row = mysql_fetch_row($rs)){
-				foreach ($row as $attr) {
-					# code...
-					echo $attr." ";
-				}
-				echo "<br/>";
+		if(preg_match("/^\s*select/i", $query) or preg_match("/^\s*show/i", $query)){
+			$db_connection = mysql_connect("localhost", "cs143", "");
+			if(!$db_connection){
+				die('Not connected : ' . mysql_error());
 			}
+			echo 'Connected successfully';
+			echo '<br/>';
+			$db_selected = mysql_select_db("CS143", $db_connection);
+			if(!$db_selected){
+				die('Can\'t use CS143 : ' . mysql_error());
+			}
+			echo 'Connected to CS143!';
+			echo '<br/>';
+
+			$rs = mysql_query($query, $db_connection);
+			if(mysql_errno()){
+				echo mysql_error()."<br>";
+			}else{
+				$num = mysql_num_fields($rs);
+				echo "<table border = 1>";
+
+				for ($index=0;$index<$numfields;$index++){
+					echo "<th>".mysql_field_name($rs,$index)."</th>";
+				}
+	
+				while($row = mysql_fetch_row($rs)){
+					foreach ($row as $attr) {
+						# code...
+						echo $attr." ";
+					}
+					echo "<br/>";
+				}
+			}
+			mysql_close($db_connection);
 		}
 	}
-
-	mysql_close($db_connection);
-
-
-
 ?>
 </body>
 </html>
