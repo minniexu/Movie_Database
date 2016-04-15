@@ -31,11 +31,14 @@ Example: <tt>SELECT * FROM Actor WHERE id=10;</tt><br />
 			}
 			echo 'Connected to CS143!';
 			echo '<br/>';
+			echo '<br/>';
 
 			$rs = mysql_query($query, $db_connection);
 			if(mysql_errno()){
 				echo mysql_error()."<br>";
 			}else{
+				echo 'Result is shown as follows: ';
+				echo '<br/>';
 				$num = mysql_num_fields($rs);
 				echo "<table border = 1>";
 
@@ -44,12 +47,14 @@ Example: <tt>SELECT * FROM Actor WHERE id=10;</tt><br />
 				}
 	
 				while($row = mysql_fetch_row($rs)){
+					echo "<tr>";
 					foreach ($row as $attr) {
 						# code...
-						echo $attr." ";
+						echo "<td align='center'>".$attr."</td>";
 					}
-					echo "<br/>";
+					echo "<tr/>";
 				}
+				echo "</table>";
 			}
 			mysql_close($db_connection);
 		}
